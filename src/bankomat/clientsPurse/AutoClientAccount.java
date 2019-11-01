@@ -21,12 +21,9 @@ public class AutoClientAccount {
     public List<Card> autoInitCards() {
         
         List<Card> list = new ArrayList<Card>();
-        CurrencyEnumeration e1 = CurrencyEnumeration.UAH;
-        CurrencyEnumeration e2 = CurrencyEnumeration.USD;
-        CurrencyEnumeration e3 = CurrencyEnumeration.EUR;
         
         CardWithMagneticStringPrivatbank card1 = new CardWithMagneticStringPrivatbank();
-        card1.setCurrency(e1);
+        card1.setCurrency(CurrencyEnumeration.UAH);
         card1.setBalance(6000);
         card1.setCvv("111");
         card1.setDate(new Date(01/12/2021));
@@ -35,7 +32,7 @@ public class AutoClientAccount {
         card1.setPinCode("1234");
         
         CardWithMagneticStringPrivatbank card2 = new CardWithMagneticStringPrivatbank();
-        card2.setCurrency(e2);
+        card2.setCurrency(CurrencyEnumeration.USD);
         card2.setBalance(6000);
         card2.setCvv("111");
         card2.setDate(new Date(01/12/2021));
@@ -44,7 +41,7 @@ public class AutoClientAccount {
         card2.setPinCode("1234");
         
         CardWithMagneticStringPrivatbank card3 = new CardWithMagneticStringPrivatbank();
-        card3.setCurrency(e3);
+        card3.setCurrency(CurrencyEnumeration.EUR);
         card3.setBalance(6000);
         card3.setCvv("111");
         card3.setDate(new Date(01/12/2021));
@@ -52,9 +49,39 @@ public class AutoClientAccount {
         card3.setNumber("4444333322225555");
         card3.setPinCode("1234");
         
+        CardWithMagneticStringPrivatbank card4 = new CardWithMagneticStringPrivatbank();
+        card4.setCurrency(CurrencyEnumeration.UAH);
+        card4.setBalance(6000);
+        card4.setCvv("111");
+        card4.setDate(new Date(01/12/2021));
+        card4.setMagneticString("Купцов Денис");
+        card4.setNumber("2222333311115555");
+        card4.setPinCode("1234");
+        
+        CardWithMagneticStringPrivatbank card5 = new CardWithMagneticStringPrivatbank();
+        card5.setCurrency(CurrencyEnumeration.USD);
+        card5.setBalance(6000);
+        card5.setCvv("111");
+        card5.setDate(new Date(01/12/2021));
+        card5.setMagneticString("Купцов Денис");
+        card5.setNumber("1111333322221111");
+        card5.setPinCode("1234");
+        
+        CardWithMagneticStringPrivatbank card6 = new CardWithMagneticStringPrivatbank();
+        card6.setCurrency(CurrencyEnumeration.EUR);
+        card6.setBalance(6000);
+        card6.setCvv("111");
+        card6.setDate(new Date(01/12/2021));
+        card6.setMagneticString("Купцов Денис");
+        card6.setNumber("4444333322225555");
+        card6.setPinCode("1234");
+        
         list.add(card1);
         list.add(card2);
         list.add(card3);
+        list.add(card4);
+        list.add(card5);
+        list.add(card6);
 
         return list;
     }

@@ -7,6 +7,8 @@ package bankomat.pratsOfATM;
 
 import bankomat.abstractClasses.Card;
 import bankomat.interfaces.CardHolderable;
+import static bankomat.main.Main.LOGGER;
+import java.util.logging.Level;
 
 /**
  *
@@ -24,16 +26,16 @@ public class CardHolder implements CardHolderable {
 
     @Override
     public Card returnCard(Card card) {
-        StringBuilder builder = new StringBuilder("Карта возвращена клиенту");
+        LOGGER.log(Level.INFO, "Карта возвращена клиенту");
         return card;
     }
 
     @Override
     public boolean getCardFromClient(Card card, String pin) {
 
-        if (card.checkDate(card.getDate()) && card.checkPinCode(card.getPinCode())&& card.getPinCode() == pin) {
+        if (card.checkDate(card.getDate()) && card.checkPinCode(card.getPinCode()) && card.getPinCode().equals(pin)) {
             holdCard = true;
-            StringBuilder builder = new StringBuilder("Карта прошла проверку");
+            LOGGER.log(Level.INFO, "Карта прошла проверку");
         } else {
             withdrawCard();
         }
@@ -43,7 +45,7 @@ public class CardHolder implements CardHolderable {
     @Override
     public void withdrawCard() {
         holdCard = false;
-        StringBuilder builder = new StringBuilder("Карта изъята банкоматом");
+        LOGGER.log(Level.INFO, "Карта изъята банкоматом");
 
     }
 

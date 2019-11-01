@@ -16,10 +16,6 @@ import java.util.List;
  */
 public interface BankomatOperationable {
 
-    void cashTaken(Card card, List<Casset> casset);
-
-    void transferMoney();
-
     boolean calculateTransferMoney(Card card, Card card2, double sum);
 
     double showBalance(Card card);

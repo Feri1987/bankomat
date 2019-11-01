@@ -43,7 +43,7 @@ public class Monitor implements Scrinable {
     }
 
     public boolean init(int width, int height) {
-        System.out.println("Максимальное разрешение экрана: 800х600");
+        
         if ((width > 0 && width < 800) && (height > 0 && height <= 600)) {
             this.width = width;
             this.height = height;
@@ -60,7 +60,12 @@ public class Monitor implements Scrinable {
     public void autoInit() {
         setHeight(800);
         setSize(600);
-        System.out.println("Экран проинициализирован, параметры: " + getHeight() +"x"+ getSize());
+        
+        StringBuilder builder = new StringBuilder("Экран проинициализирован, параметры: ");
+        builder.append(getHeight()).
+                append("x").
+                append(getSize());
+        System.out.println(builder);
     }
     
 

@@ -6,12 +6,12 @@
 package bankomat.pratsOfATM;
 
 import bankomat.abstractClasses.Card;
-import bankomat.clientsPurse.AutoClientAccount;
 import bankomat.interfaces.BankomatOperationable;
+import static bankomat.main.Main.LOGGER;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 /**
  *
@@ -47,61 +47,9 @@ public class Bankomat implements BankomatOperationable {
         return printer;
     }
 
-    @Override
-    public void cashTaken(Card card, List<Casset> cassets) {
-        StringBuilder menu = new StringBuilder("\nСумма для снятия должна быть кратной:\n");
-        boolean take = false;
-        int bankomatCash = 0;
-        int minSum = 0;
-        for (Casset casset : cassets) {
-            if (casset.getCurr().equals(card.getCurrency())) {
-                for (Map.Entry<Integer, Integer> denom : casset.countOfdenominations.entrySet()) {
-                    minSum = casset.countOfdenominations.firstEntry().getKey();
-                    bankomatCash += denom.getKey() * denom.getValue();
-                    menu.append(denom.getKey()).
-                            append(" - ");
-                }
-            }
-        }
-        menu.append("\nДоступная сумма для снятия: ").
-                append(bankomatCash).
-                append("\nВведите сумму для снятия: ");
-        System.out.print(menu);
-        Map<Integer, Integer> needToTake = new TreeMap<Integer, Integer>();
-        Scanner scanner = new Scanner(System.in);
-        int temp = scanner.nextInt();
-        int sum = 0;
-        while (sum == 0) {
-            if (temp % minSum == 0) {
-                sum = temp;
-            } else {
-                System.out.println("Сумма указана некорректно, повторите ввод: ");
-                temp = scanner.nextInt();
-            }
-        }
+    
 
-        if (sum <= card.getBalance()) {
-            for (Casset casset : cassets) {
-                TreeMap<Integer, Integer> tempCash = casset.countOfdenominations;
-                if (sum < bankomatCash) {
-                    if (casset.getCurr().equals(card.getCurrency())) {
-                        needToTake = calculation(sum, tempCash);
-                    }
-                } else {
-                    casset.cassetEmptyInforming();
-                }
-            }
-        } else {
-            System.out.println("На Вашей карте недостаточно средств");
-        }
-        int cash = 0;
-        for (Map.Entry<Integer, Integer> minus : needToTake.entrySet()) {
-            cash += minus.getKey() * minus.getValue();
-        }
-        card.setBalance(card.getBalance() - cash);
-    }
-
-    private Map calculation(int sum, TreeMap<Integer, Integer> cassetInfo) {
+    public Map<Integer, Integer> calculation(int sum, TreeMap<Integer, Integer> cassetInfo) {
 
         TreeMap<Integer, Integer> needToTake = new TreeMap<Integer, Integer>();
         TreeMap<Integer, Integer> tempCash = (TreeMap<Integer, Integer>) cassetInfo.clone();
@@ -177,7 +125,10 @@ public class Bankomat implements BankomatOperationable {
         }
 
         for (Map.Entry e : needToTake.entrySet()) {
-            System.out.println("Банкомат выдал: " + e.getValue() + " купюр, номиналом: " + e.getKey());
+            System.out.println(new StringBuilder("Банкомат выдал: ").
+                                append(e.getValue()).
+                                append(" купюр, номиналом: ").
+                                append(e.getKey()));
         }
         StringBuilder text = new StringBuilder("\nВ банкомате осталось:\n");
         for (Map.Entry<Integer, Integer> last : cassetInfo.entrySet()) {
@@ -192,32 +143,28 @@ public class Bankomat implements BankomatOperationable {
     }
 
     @Override
-    public void transferMoney() {
-        AutoClientAccount client = new AutoClientAccount();
-        List<Card> listAcc = client.autoInitCards();
-        int temp = 1;
-        for (Card cardFromList : listAcc) {
-            System.out.print(temp + ". " + cardFromList.getNumber() + "   " + cardFromList.getBalance() + "\n");
-            temp++;
-        }
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Выберите карту с которой хотите перевести средства: ");
-        int from = scanner.nextInt();
-        System.out.print("Выберите карту на которую хотите перевести средства: ");
-        int to = scanner.nextInt();
-        System.out.print("Для перевода доступно: " + listAcc.get(from - 1).getBalance() + "\nУкажите сумму для перевода: ");
-        double sum = scanner.nextDouble();
-        calculateTransferMoney(listAcc.get(from - 1), listAcc.get(to - 1), sum);
-    }
-
-    @Override
     public boolean calculateTransferMoney(Card fromCard, Card toCard, double sum) {
-        if (checkBalance(fromCard, sum) && !fromCard.getCurrency().equals(toCard.getCurrency())) {
+        if (checkBalance(fromCard, sum) && fromCard.getCurrency().equals(toCard.getCurrency())) {
             toCard.setBalance(toCard.getBalance() + sum);
             fromCard.setBalance(fromCard.getBalance() - sum);
+            System.out.println(new StringBuilder().
+                                append("\nБаланс карты ").
+                                append(fromCard.getNumber()).
+                                append(" после операции составляет: ").
+                                append(fromCard.getBalance()).
+                                append("    ").
+                                append(fromCard.getCurrency().name()).
+                                append("\n").
+                                append("Баланс карты ").
+                                append(toCard.getNumber()).
+                                append(" после пополнения составляет: ").
+                                append(toCard.getBalance()).
+                                append("  ").
+                                append(fromCard.getCurrency().name()).
+                                append("\n"));
             return true;
         } else {
+            LOGGER.log(Level.WARNING, "Карты разной валюты или не хватает средств");
             return false;
         }
     }

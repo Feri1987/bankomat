@@ -14,12 +14,12 @@ import java.util.Date;
  */
 public abstract class Card {
 
-    private String number;
-    private String pinCode;
-    private Date date;
-    private String cvv;
-    private double balance;
-    private CurrencyEnumeration currency;
+    private String number;                  //номер карты
+    private String pinCode;                 //Пин код карты
+    private Date date;                      //Срок действия карты
+    private String cvv;                     //СВВ
+    private double balance;                 //Баланс
+    private CurrencyEnumeration currency;   //Валюта
 
     abstract public boolean checkNumber(String number);
 
@@ -77,7 +77,7 @@ public abstract class Card {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public synchronized void setBalance(double balance) {
         if (checkBalance(balance) == true) {
             this.balance = balance;
         }

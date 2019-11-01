@@ -8,12 +8,14 @@ package bankomat.pratsOfATM;
 import bankomat.enumerations.CurrencyEnumeration;
 import bankomat.exeptions.CassetException;
 import bankomat.interfaces.Cassetable;
+import static bankomat.main.Main.LOGGER;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 /**
  *
@@ -23,7 +25,7 @@ public class Casset implements Cassetable {
 
     private CurrencyEnumeration curr;          //валюта
     private List<Integer> denominations;     //номиналы купюр
-    TreeMap<Integer, Integer> countOfdenominations;
+    private TreeMap<Integer, Integer> countOfdenominations;
     private int cash;
 
     public Casset() {
@@ -51,6 +53,14 @@ public class Casset implements Cassetable {
 
     public void setDenominations(List<Integer> denominations) {
         this.denominations = denominations;
+    }
+
+    public TreeMap<Integer, Integer> getCountOfdenominations() {
+        return countOfdenominations;
+    }
+
+    public void setCountOfdenominations(TreeMap<Integer, Integer> countOfdenominations) {
+        this.countOfdenominations = countOfdenominations;
     }
 
     @Override
@@ -83,10 +93,23 @@ public class Casset implements Cassetable {
         System.out.print("1.UAH\n2.USD\n3.EUR\nВыберите номер валюты для загрузки кассеты: ");
         Scanner scanner = new Scanner(System.in);
         countOfdenominations = new TreeMap<Integer, Integer>();
-        switch (scanner.nextInt()) {
+
+        int a = 0;
+        while (true) {
+            if (scanner.hasNextInt()) {
+                a = scanner.nextInt();
+                break;
+            } else {
+                LOGGER.log(Level.WARNING, "Надо нажимать циферки!");
+                System.out.print("\nПовторите ввод: ");
+                scanner.next();
+            }
+        }
+
+        switch (a) {
             case (1):
                 curr = CurrencyEnumeration.UAH;
-                denominations = Arrays.asList(20, 50, 100, 200, 500);
+                denominations = Arrays.asList(50, 100, 200, 500);
                 System.out.println("Выбрана гривна для загрузки\n");
                 break;
             case (2):
@@ -113,14 +136,34 @@ public class Casset implements Cassetable {
             System.out.println("Введите количество купюр для загрузки. \nДоступные для загрузки номиналы: ");
             for (Integer denomination : denominations) {
                 System.out.print("Номиналом " + denomination + " : ");
-                temp = scanner.nextInt();
+
+                while (true) {
+                    if (scanner.hasNextInt()) {
+                        temp = scanner.nextInt();
+                        break;
+                    } else {
+                        LOGGER.log(Level.WARNING, "Надо нажимать циферки!");
+                        System.out.print("\nПовторите ввод: ");
+                        scanner.next();
+                    }
+                }
+
                 int count = 0;
                 while (count == 0) {
                     if (temp > 0) {
                         count = temp;
                     } else {
-                        System.out.println("Ошибка ввода, повторите попытку: ");
-                        temp = scanner.nextInt();
+                        LOGGER.log(Level.WARNING, "Ошибка ввода, повторите попытку: ");
+                        while (true) {
+                            if (scanner.hasNextInt()) {
+                                temp = scanner.nextInt();
+                                break;
+                            } else {
+                                LOGGER.log(Level.WARNING, "Надо нажимать циферки!");
+                                System.out.print("\nПовторите ввод: ");
+                                scanner.next();
+                            }
+                        }
                     }
                 }
 
@@ -132,7 +175,7 @@ public class Casset implements Cassetable {
                 cash += denomination * count;
             }
 
-            StringBuilder text = new StringBuilder("\nКупюкр в кассете:\n");
+            StringBuilder text = new StringBuilder("\nКупюр в кассете:\n");
             for (Map.Entry<Integer, Integer> last : countOfdenominations.entrySet()) {
 
                 System.out.println(last.getKey() + last.getValue());
@@ -143,11 +186,23 @@ public class Casset implements Cassetable {
                         append(last.getValue()).
                         append("\n");
             }
+            text.append("\nВ банкомат загружено = ").
+                    append(cash).
+                    append("\n").
+                    append("\nДобавить еще купюры?\n1.Да\n2.Нет\n");
             System.out.println(text);
-            System.out.println("\ncash = " + cash + "\n");
 
-            System.out.print("Добавить еще купюры?\n1.Да\n2.Нет\n");
-            if (scanner.nextInt() == 2) {
+            while (true) {
+                if (scanner.hasNextInt()) {
+                    temp = scanner.nextInt();
+                    break;
+                } else {
+                    LOGGER.log(Level.WARNING, "Надо нажимать циферки!");
+                    System.out.print("\nПовторите ввод: ");
+                    scanner.next();
+                }
+            }
+            if (temp == 2) {
                 break;
             }
         }
@@ -184,7 +239,18 @@ public class Casset implements Cassetable {
             list.add(casset);
 
             System.out.print("\nДобавить еще кассету?\n1.Да\n2.Нет\n ");
-            if (scanner.nextInt() == 2) {
+            int temp = 0;
+            while (true) {
+                if (scanner.hasNextInt()) {
+                    temp = scanner.nextInt();
+                    break;
+                } else {
+                    LOGGER.log(Level.WARNING, "Надо нажимать циферки!");
+                    System.out.print("\nПовторите ввод: ");
+                    scanner.next();
+                }
+            }
+            if (temp == 2) {
                 break;
             }
         }

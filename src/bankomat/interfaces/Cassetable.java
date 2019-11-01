@@ -22,6 +22,7 @@ public interface Cassetable {
     void giveCash(Map<Integer, Integer> countOfdenominations);
 
     void cassetEmptyInforming();
+
     List<Casset> getCassetList();
 
 }

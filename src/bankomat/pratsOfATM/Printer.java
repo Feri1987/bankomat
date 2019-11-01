@@ -22,17 +22,15 @@ public class Printer implements Printable {
     public void print(Card card, double sum) {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("E yyyy.MM.dd 'и время' hh:mm:ss a zzz");
-        StringBuilder builder = new StringBuilder();
-        builder.append("Снятие с карты: ").
+        
+        System.out.println(new StringBuilder("\nСнятие с карты: ").
                 append(card.getNumber()).
-                append("Сумма сняти: ").
+                append("\nСумма снятия: ").
                 append(sum).
                 append("\nОстаток на карте: ").
                 append(card.getBalance()).
                 append("\nТекущая дата: ").
-                append(dateFormat.format(date)).append("\n").append(builder);
-        
-        System.out.println(builder);
+                append(dateFormat.format(date)).append("\n"));
     }
 
 }
