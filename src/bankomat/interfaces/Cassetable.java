@@ -15,14 +15,10 @@ import java.util.Map;
  */
 public interface Cassetable {
 
-    void initCasset();
-
     List<Casset> autoInitCasset();
 
     void giveCash(Map<Integer, Integer> countOfdenominations);
 
     void cassetEmptyInforming();
-
-    List<Casset> getCassetList();
 
 }

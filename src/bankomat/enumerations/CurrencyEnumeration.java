@@ -10,16 +10,22 @@ package bankomat.enumerations;
  * @author Denis
  */
 public enum CurrencyEnumeration {
-    UAH("grn", 980),
-    USD("usd", 840),
-    EUR("eur", 978);
+    UAH("grn", 980, new int[]{50, 100, 200, 500}),
+    USD("usd", 840, new int[]{10, 20, 50, 100}),
+    EUR("eur", 978, new int[]{10, 20, 50, 100});
 
     private String name;
     private int code;
+    private int[] denominations;
 
-    CurrencyEnumeration(String name, int code) {
+    private CurrencyEnumeration(String name, int code, int... denominations) {
         this.name = name;
         this.code = code;
+        this.denominations = denominations;
+    }
+
+    public int[] getDenominations() {
+        return denominations;
     }
 
     public String getName() {

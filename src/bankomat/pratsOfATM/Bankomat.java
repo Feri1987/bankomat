@@ -24,11 +24,11 @@ public class Bankomat implements BankomatOperationable {
     private CardHolder cardHolder;
     private Printer printer;
 
-    public Bankomat(Monitor monitor, Casset casset, CardHolder cardHolder, Printer printer) {
-        this.monitor = monitor;
-        this.casset = casset;
+    public Bankomat(CardHolder cardHolder) {
+        this.monitor = new Monitor();
+        this.casset = new Casset();
         this.cardHolder = cardHolder;
-        this.printer = printer;
+        this.printer = new Printer();
     }
 
     public Monitor getMonitor() {

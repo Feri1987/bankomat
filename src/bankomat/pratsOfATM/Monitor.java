@@ -44,7 +44,7 @@ public class Monitor implements Scrinable {
 
     public boolean init(int width, int height) {
         
-        if ((width > 0 && width < 800) && (height > 0 && height <= 600)) {
+        if ((width > 0 && width <= 800) && (height > 0 && height <= 600)) {
             this.width = width;
             this.height = height;
             return true;
